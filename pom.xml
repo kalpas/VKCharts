@@ -20,12 +20,8 @@
 
     <dependencies>
 
-      <!--   <dependency>
-            <groupId>kalpas</groupId>
-            <artifactId>VK</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency> -->
+        <!-- <dependency> <groupId>kalpas</groupId> <artifactId>VK</artifactId> 
+            <version>0.0.1-SNAPSHOT</version> <scope>compile</scope> </dependency> -->
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
@@ -57,10 +53,17 @@
             <classifier>sources</classifier>
             <scope>test</scope>
         </dependency>
+        <!-- Visualization -->
         <dependency>
             <groupId>com.google.gwt.google-apis</groupId>
             <artifactId>gwt-visualization</artifactId>
             <version>1.1.2</version>
+        </dependency>
+        <!-- GWT Charts -->
+        <dependency>
+            <groupId>com.googlecode.gwt-charts</groupId>
+            <artifactId>gwt-charts</artifactId>
+            <version>0.9.8</version>
         </dependency>
     </dependencies>
 

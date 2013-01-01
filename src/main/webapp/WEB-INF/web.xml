@@ -5,20 +5,20 @@
 
 <web-app>
 
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>kalpas.VKCharts.server.GreetingServiceImpl</servlet-class>
-  </servlet>
+    <!-- Servlets -->
+    <servlet>
+        <servlet-name>dataServlet</servlet-name>
+        <servlet-class>kalpas.VKCharts.server.DataServiceImpl</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/VKCharts/greet</url-pattern>
-  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dataServlet</servlet-name>
+        <url-pattern>/VKCharts/get_data</url-pattern>
+    </servlet-mapping>
 
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>VKCharts.html</welcome-file>
-  </welcome-file-list>
+    <!-- Default page to serve -->
+    <welcome-file-list>
+        <welcome-file>VKCharts.html</welcome-file>
+    </welcome-file-list>
 
 </web-app>
