@@ -3,15 +3,16 @@ package kalpas.VKCharts.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.visualization.client.AbstractDataTable;
-import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
-import com.google.gwt.visualization.client.DataTable;
-import com.google.gwt.visualization.client.VisualizationUtils;
-import com.google.gwt.visualization.client.visualizations.corechart.Options;
-import com.google.gwt.visualization.client.visualizations.corechart.PieChart;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.googlecode.gwt.charts.client.ChartLoader;
+import com.googlecode.gwt.charts.client.ChartPackage;
+import com.googlecode.gwt.charts.client.ColumnType;
+import com.googlecode.gwt.charts.client.DataTable;
+import com.googlecode.gwt.charts.client.corechart.PieChart;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -32,63 +33,67 @@ public class VKCharts implements EntryPoint {
      */
     private final DataServiceAsync dataService  = GWT.create(DataService.class);
 
-    private PieChart               pie;
-    private DataTable              data;
+    private SimpleLayoutPanel      layoutPanel;
+    private PieChart               pieChart;
 
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
+        Window.enableScrolling(false);
+        Window.setMargin("0px");
 
-        // Create a callback to be called when the visualization API
-        // has been loaded.
-        Runnable onLoadCallback = new Runnable() {
+        // RootPanel.get("testChartConatiner").add(getSimpleLayoutPanel());
+
+        // Create the API Loader
+        ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
+        chartLoader.loadApi(new Runnable() {
+
             public void run() {
-                Panel panel = RootPanel.get("testChartConatiner");
-
-                // Create a pie chart visualization.
-                pie = new PieChart(createTable(), createOptions());
-
-                // pie.addSelectHandler(createSelectHandler(pie));
-                panel.add(pie);
+                RootPanel.get("testChartConatiner").add(getPieChart());
+                drawPieChart();
             }
-        };
+        });
 
-        // Load the visualization api, passing the onLoadCallback to be called
-        // when loading is done.
-        VisualizationUtils.loadVisualizationApi(onLoadCallback, PieChart.PACKAGE);
-        
         Timer refreshTimer = new Timer() {
             @Override
             public void run() {
                 getData();
             }
-          };
+        };
         refreshTimer.scheduleRepeating(1000);
     }
 
-    private Options createOptions() {
-        Options options = Options.create();
-        options.setWidth(400);
-        options.setHeight(240);
-        options.setTitle("test chart");
-        return options;
+    private Widget getPieChart() {
+        if (pieChart == null) {
+            pieChart = new PieChart();
+        }
+        return pieChart;
     }
+    
+    DataTable data;
 
-    private AbstractDataTable createTable() {
+    private void drawPieChart() {
+        // Prepare the data
         data = DataTable.create();
-        data.addColumn(ColumnType.STRING, "Task");
-        data.addColumn(ColumnType.NUMBER, "Hours per Day");
-        data.addRows(2);
-        data.setValue(0, 0, "Work");
-        data.setValue(0, 1, 14);
-        data.setValue(1, 0, "Sleep");
-        data.setValue(1, 1, 10);
-        return data;
+        data.addColumn(ColumnType.STRING, "Name");
+        data.addColumn(ColumnType.NUMBER, "Donuts eaten");
+        data.addRows(4);
+        data.setValue(0, 0, "Michael");
+        data.setValue(1, 0, "Elisa");
+        data.setValue(2, 0, "Robert");
+        data.setValue(3, 0, "John");
+        data.setValue(0, 1, 5);
+        data.setValue(1, 1, 7);
+        data.setValue(2, 1, 3);
+        data.setValue(3, 1, 2);
+
+        // Draw the chart
+        pieChart.draw(data);
     }
 
     private void getData() {
-        
+
         dataService.getData("some", new AsyncCallback<String>() {
             public void onFailure(Throwable caught) {
             }
@@ -97,11 +102,11 @@ public class VKCharts implements EntryPoint {
                 data.addRow();
                 data.setValue(data.getNumberOfRows() - 1, 0, result);
                 data.setValue(data.getNumberOfRows() - 1, 1, 10);
-                pie = new PieChart(createTable(), createOptions());
+                pieChart.draw(data);
 
             }
         });
-        
+
     }
 
 }
