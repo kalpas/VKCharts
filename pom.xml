@@ -20,8 +20,6 @@
 
     <dependencies>
 
-        <!-- <dependency> <groupId>kalpas</groupId> <artifactId>VK</artifactId> 
-            <version>0.0.1-SNAPSHOT</version> <scope>compile</scope> </dependency> -->
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
@@ -63,7 +61,7 @@
         <dependency>
             <groupId>com.googlecode.gwt-charts</groupId>
             <artifactId>gwt-charts</artifactId>
-            <version>0.9.8</version>
+            <version>0.9.9</version>
         </dependency>
     </dependencies>
 
