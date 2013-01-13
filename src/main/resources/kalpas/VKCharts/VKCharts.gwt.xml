@@ -16,8 +16,13 @@
 
     <!-- Other module inherits -->
 
+    <inherits name="kalpas.VKCore" />
     <!-- <inherits name='com.google.gwt.visualization.Visualization' /> -->
     <inherits name="com.googlecode.gwt.charts.Charts" />
+
+    <!-- Guava -->
+    <inherits name="com.google.common.collect.Collect" />
+    
 
     <!-- Specify the app entry point class. -->
     <entry-point class='kalpas.VKCharts.client.VKCharts' />

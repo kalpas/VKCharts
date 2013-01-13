@@ -1,12 +1,16 @@
 package kalpas.VKCharts.client;
 
+import java.util.List;
+
+import kalpas.VKCore.simple.DO.User;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.gwt.charts.client.ChartLoader;
 import com.googlecode.gwt.charts.client.ChartPackage;
@@ -32,14 +36,16 @@ public class VKCharts implements EntryPoint {
      * service.
      */
     private final DataServiceAsync dataService  = GWT.create(DataService.class);
+    final Label                    errorLabel   = new Label();
 
-    private SimpleLayoutPanel      layoutPanel;
     private PieChart               pieChart;
 
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
+        RootPanel.get("errorLabelContainer").add(errorLabel);
+
         Window.enableScrolling(false);
         Window.setMargin("0px");
 
@@ -104,6 +110,20 @@ public class VKCharts implements EntryPoint {
                 data.setValue(data.getNumberOfRows() - 1, 1, 10);
                 pieChart.draw(data);
 
+            }
+        });
+        
+        dataService.getUsers(new AsyncCallback<List<User>>() {
+
+            public void onFailure(Throwable caught) {
+                errorLabel.setText(caught.getMessage());
+            }
+
+            public void onSuccess(List<User> result) {
+                for (User user : result) {
+                    errorLabel.setText(errorLabel.getText() + "\n" + user.last_name);
+                }
+                
             }
         });
 
